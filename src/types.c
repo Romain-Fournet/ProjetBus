@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "types.h"
 
@@ -18,6 +19,16 @@ void afficheStation( Tstation *station){
             printf("\nfin troneon\n");
         }
     }
+}
+
+void initStation( Tstation *station){
+    srand( time( NULL ) );
+    TDate date;
+    date.annee = (rand() % 126) + 1900; //Date entre 1900 et 2025
+    date.mois = rand() % 13;
+    date.jour = rand() % 30;
+    station->coutMaintenance = rand() % 91 + 10; 
+    station->dateDerniereMaintenance = date;
 }
 
 // Getteurs
@@ -51,6 +62,14 @@ TypeNoeud getTypeNoeud(Tstation *myStation){
     return myStation->arret_ou_troncon;
 }
 
+int getCoutMaintenance(Tstation *myStation){
+    return myStation->coutMaintenance;
+}
+
+TDate getDateDerniereMaintenance(Tstation *myStation){
+    return myStation->dateDerniereMaintenance;
+}
+
 
 
 int getPosXBus( Tbus myBus ){
@@ -75,8 +94,15 @@ TsensParcours getSensParcours(Tbus myBus){
 }
 
 
-
 // Setteurs
+
+void setCoutMaintenance(Tstation *myStation, int cout){
+    myStation->coutMaintenance = cout;
+}
+
+void setDateDerniereMaintenance(Tstation *myStation, TDate date){
+    myStation->dateDerniereMaintenance = date;
+}
 
 void setActualStation( Tbus myBus, TlisteStation arrivalStation ){
     myBus->positionSurLaLigneDeBus = arrivalStation;
