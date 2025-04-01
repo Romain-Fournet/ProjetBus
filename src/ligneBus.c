@@ -11,6 +11,7 @@ int getDistStations(Tstation station1, Tstation station2){
     return abs((int)sqrt(pow(station2.posX - station1.posX, 2) + pow(station2.posY - station1.posY, 2)));
 }
 
+
 Tbus creeBus( int idBus, TlisteStation start ){
     Tbus myBus = (Tbus)malloc(sizeof(Typebus));
     myBus->idBus = idBus;
@@ -60,22 +61,39 @@ Tstation *creeTroncon(int idLigneBus, Tstation* depart, Tstation *arrivee, int c
     return newStation;
 }
 
-TlisteStation creeLigneDeBus1(){
+TlisteStation chargerLigne(char *nom_fichier){
+    FILE *fichier = fopen(nom_fichier, "r");
     TlisteStation newLigne;
-    Tstation *dep,*troncon,*arr;
-
     initListe(&newLigne);
 
-    //creation en m�moire des stations et troncons
-    dep = creeArret(10,10,"Charles de Gaulle",1);
-    arr = creeArret(300,400,"Jules Ferry",2);
-    int dist = getDistStations(*dep, *arr);
-    troncon = creeTroncon(1,dep,arr,dist,dist);
+    if (fichier == NULL) {
+        printf("Erreur d'ouverture du fichier ! | Nom fichier %s\n", nom_fichier);
+        return newLigne;
+    }
 
-    //ajout de ces stations et troncons dans la liste doublement chain�e  (champ pdata)
-    newLigne = ajoutEnFin(newLigne, dep);  //donc la t�te)
-    newLigne = ajoutEnFin(newLigne, troncon);
-    newLigne = ajoutEnFin(newLigne, arr);
+    int id, x, y;
+    char nom[50];
+    //Initialisation du départ
+    fscanf(fichier, "%d;%49[^;];%d;%d\n", &id, nom, &x, &y);
+
+    Tstation *dep = creeArret(x, y, nom, id);
+    newLigne = ajoutEnFin(newLigne, dep);
+
+    while (fscanf(fichier, "%d;%49[^;];%d;%d\n", &id, nom, &x, &y) == 4) {
+        Tstation *arr = creeArret(x, y, nom, id);
+        int dist = getDistStations(*dep, *arr);
+        Tstation *troncon = creeTroncon(id, dep, arr, dist, dist);
+        newLigne = ajoutEnFin(newLigne, troncon);
+        newLigne = ajoutEnFin(newLigne, arr);
+        dep = arr;
+    }
+
+    return newLigne;
+}
+
+
+TlisteStation creeLigneDeBus1(){
+    return chargerLigne("data/Stations_et_lignesDeBus.data");
     /*
     dep = creeArret(10,410,"Jacques Brel",3);
     troncon = creeTroncon(1,arr,dep,40,160);
@@ -92,8 +110,6 @@ TlisteStation creeLigneDeBus1(){
     newLigne = ajoutEnFin(newLigne, troncon);
     newLigne = ajoutEnFin(newLigne, dep);
     */
-
-    return newLigne;
 }
 
 

@@ -59,13 +59,15 @@ int main(int argc, char* argv[])
         TlisteStation ligne2 = creeLigneDeBus2();
         TlisteStation ligne3 = creeLigneDeBus3();
 
+        TlisteStation lignesBus[3] = {ligne1, ligne2, ligne3}; 
+
         //creation d'un (seul) bus
         Tbus bus1 = creeBus(1,ligne1);
 
         //affiche sur la console les stations et troncons des lignes de bus
-        afficheConsoleLigneBus(ligne1);
-        afficheConsoleLigneBus(ligne2);
-        afficheConsoleLigneBus(ligne3);
+        for(int i = 0; i < 3; i++){
+                afficheConsoleLigneBus(lignesBus[i]);
+        }
 
         //Current animation frame
         int frame = 0;
@@ -141,9 +143,9 @@ int main(int argc, char* argv[])
                 Deplace_Sprite(&gSpriteBus, gRenderer, incXDeplSpriteBus1,incYDeplSpriteBus1,getIdFrame(frame));
 
                 //reaffichage e chaque tour de toutes les stations
-                DessineUneLigneBus(ligne1, gSpriteArretBus, gRenderer);
-                DessineUneLigneBus(ligne2, gSpriteArretBus, gRenderer);
-                DessineUneLigneBus(ligne3, gSpriteArretBus, gRenderer);
+                for(int i = 0; i < 3; i++){
+                        DessineUneLigneBus(lignesBus[i], gSpriteArretBus, gRenderer);
+                }
 
                 //affichage de la texture ainsi mis e jour
                 maj_fenetre_texture(gRenderer);
