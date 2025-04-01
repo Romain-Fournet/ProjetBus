@@ -93,6 +93,10 @@ TsensParcours getSensParcours(Tbus myBus){
     return myBus->sensParcours;
 }
 
+TlisteStation getActualStation( Tbus myBus ){
+    return myBus->positionSurLaLigneDeBus;
+}
+
 
 // Setteurs
 
@@ -106,10 +110,6 @@ void setDateDerniereMaintenance(Tstation *myStation, TDate date){
 
 void setActualStation( Tbus myBus, TlisteStation arrivalStation ){
     myBus->positionSurLaLigneDeBus = arrivalStation;
-}
-
-TlisteStation getActualStation( Tbus myBus ){
-    return myBus->positionSurLaLigneDeBus;
 }
 
 void setPosXBus(Tbus myBus, int newX){

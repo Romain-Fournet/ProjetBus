@@ -5,6 +5,7 @@
 #include "SDL.h"
 #include "maSDL.h"
 #include "SDL_VSYNC.h"
+#include "sort.h"
 
 //#include "types.h"
 #include "ligneBus.h"
