@@ -1,10 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "types.h"
 #include "ligneBus.h"
 #include "listeDouble.h"
+
+int getDistStations(Tstation station1, Tstation station2){
+    return abs((int)sqrt(pow(station2.posX - station1.posX, 2) + pow(station2.posY - station1.posY, 2)));
+}
 
 Tbus creeBus( int idBus, TlisteStation start ){
     Tbus myBus = (Tbus)malloc(sizeof(Typebus));
@@ -61,16 +66,17 @@ TlisteStation creeLigneDeBus1(){
 
     initListe(&newLigne);
 
-    //creation en mémoire des stations et troncons
+    //creation en mï¿½moire des stations et troncons
     dep = creeArret(10,10,"Charles de Gaulle",1);
     arr = creeArret(300,400,"Jules Ferry",2);
-    troncon = creeTroncon(1,dep,arr,35,280);
+    int dist = getDistStations(*dep, *arr);
+    troncon = creeTroncon(1,dep,arr,dist,dist);
 
-    //ajout de ces stations et troncons dans la liste doublement chainée  (champ pdata)
-    newLigne = ajoutEnFin(newLigne, dep);  //donc la tête)
+    //ajout de ces stations et troncons dans la liste doublement chainï¿½e  (champ pdata)
+    newLigne = ajoutEnFin(newLigne, dep);  //donc la tï¿½te)
     newLigne = ajoutEnFin(newLigne, troncon);
     newLigne = ajoutEnFin(newLigne, arr);
-
+    /*
     dep = creeArret(10,410,"Jacques Brel",3);
     troncon = creeTroncon(1,arr,dep,40,160);
     newLigne = ajoutEnFin(newLigne, troncon);
@@ -85,6 +91,7 @@ TlisteStation creeLigneDeBus1(){
     troncon = creeTroncon(1,arr,dep,40,160);
     newLigne = ajoutEnFin(newLigne, troncon);
     newLigne = ajoutEnFin(newLigne, dep);
+    */
 
     return newLigne;
 }
@@ -96,16 +103,17 @@ TlisteStation creeLigneDeBus2(){
 
     initListe(&newLigne);
 
-    //creation en mémoire des stations et troncons
+    //creation en mï¿½moire des stations et troncons
     dep = creeArret(10,100,"Republique",6);
     arr = creeArret(30,300,"Jules Ferry",7);
-    troncon = creeTroncon(2,dep,arr,35,280);
+    int dist = getDistStations(*dep, *arr);
+    troncon = creeTroncon(2,dep,arr,dist,dist);
 
-    //ajout de ces stations et troncons dans la liste doublement chainée  (champ pdata)
-    newLigne = ajoutEnFin(newLigne, dep);  //donc la tête)
+    //ajout de ces stations et troncons dans la liste doublement chainï¿½e  (champ pdata)
+    newLigne = ajoutEnFin(newLigne, dep);  //donc la tï¿½te)
     newLigne = ajoutEnFin(newLigne, troncon);
     newLigne = ajoutEnFin(newLigne, arr);
-
+    /*
     dep = creeArret(100,40,"PLace d'armes",8);
     troncon = creeTroncon(2,arr,dep,40,160);
     newLigne = ajoutEnFin(newLigne, troncon);
@@ -120,7 +128,7 @@ TlisteStation creeLigneDeBus2(){
     troncon = creeTroncon(2,arr,dep,40,160);
     newLigne = ajoutEnFin(newLigne, troncon);
     newLigne = ajoutEnFin(newLigne, dep);
-
+*/
     return newLigne;
 }
 
@@ -130,16 +138,17 @@ TlisteStation creeLigneDeBus3(){
 
     initListe(&newLigne);
 
-    //creation en mémoire des stations et troncons
+    //creation en mï¿½moire des stations et troncons
     dep = creeArret(150,10,"Clemenceau",11);
     arr = creeArret(300,100,"Montmartre",12);
-    troncon = creeTroncon(3,dep,arr,35,280);
+    int dist = getDistStations(*dep, *arr);
+    troncon = creeTroncon(3,dep,arr,dist,dist);
 
-    //ajout de ces stations et troncons dans la liste doublement chainée  (champ pdata)
-    newLigne = ajoutEnFin(newLigne, dep);  //donc la tête)
+    //ajout de ces stations et troncons dans la liste doublement chainï¿½e  (champ pdata)
+    newLigne = ajoutEnFin(newLigne, dep);  //donc la tï¿½te)
     newLigne = ajoutEnFin(newLigne, troncon);
     newLigne = ajoutEnFin(newLigne, arr);
-
+/*
     dep = creeArret(600,610,"Tour eiffel",13);
     troncon = creeTroncon(3,arr,dep,40,160);
     newLigne = ajoutEnFin(newLigne, troncon);
@@ -154,7 +163,7 @@ TlisteStation creeLigneDeBus3(){
     troncon = creeTroncon(3,arr,dep,40,160);
     newLigne = ajoutEnFin(newLigne, troncon);
     newLigne = ajoutEnFin(newLigne, dep);
-
+    */
     return newLigne;
 }
 
@@ -168,7 +177,7 @@ TlisteStation getNextStation( TlisteStation l){
     else {
             if (getTypeNoeud(getPtrData(l))==ARRET) {
                     if (ligneBusVide( getNextCell(l) )) return NULL;  //nous sommes sur un terminus
-                    else return getNextCell( getNextCell( l ) );  //le prochain arret est dans 2 cellules dans la liste, la cellule suivaante étant un TRONCON
+                    else return getNextCell( getNextCell( l ) );  //le prochain arret est dans 2 cellules dans la liste, la cellule suivaante ï¿½tant un TRONCON
             }
             else return getNextCell( l );  //si on est sur un TRONCON alors la prochaine cellule est la prochaine station (ARRET)
     }
@@ -178,7 +187,7 @@ TlisteStation getNextTroncon( TlisteStation l){
     if (ligneBusVide(l)) return NULL;
     else {
             if (getTypeNoeud(getPtrData(l))==ARRET) {
-                return getNextCell(l);  //la prochaine cellule est un TRONCON, peut être égale à NULL si on est sur un terminus
+                return getNextCell(l);  //la prochaine cellule est un TRONCON, peut ï¿½tre ï¿½gale ï¿½ NULL si on est sur un terminus
             }
             else{
                     printf("\n(getNextTroncon) erreur algo, on est deja sur un troncon");
@@ -192,7 +201,7 @@ TlisteStation getPreviousStation( TlisteStation l){
     else {
             if (getTypeNoeud(getPtrData(l))==ARRET) {
                     if (ligneBusVide( getPrevCell(l) )) return NULL;  //nous sommes sur un terminus
-                    return getPrevCell( getPrevCell( l ) );  //le prochain arret est dans 2 cellules dans la liste, la cellule suivaante étant un TRONCON
+                    return getPrevCell( getPrevCell( l ) );  //le prochain arret est dans 2 cellules dans la liste, la cellule suivaante ï¿½tant un TRONCON
             }
             else return getPrevCell( l );  //si on est sur un TRONCON alors la prochaine cellule est la prochaine station (ARRET)
     }
@@ -214,14 +223,14 @@ void deplaceBus(Tbus myBus, TsensParcours sens_deplacement, int *incXSprite, int
     TlisteStation dest;
     int xdep, ydep, xarr, yarr, pas;
     float ratio;
-    pas = 2;  //équivalent au parametre d'erreur dans le tracé de Segment de Bresenham
+    pas = 2;  //ï¿½quivalent au parametre d'erreur dans le tracï¿½ de Segment de Bresenham
     //https://fr.wikipedia.org/wiki/Algorithme_de_trac%C3%A9_de_segment_de_Bresenham
 
 
     if (sens_deplacement == depart_vers_arrivee) dest = getNextStation(getActualStation(myBus));
         else dest = getPreviousStation(getActualStation(myBus));
 
-    //par défaut: pas de déplacement du bus
+    //par dï¿½faut: pas de dï¿½placement du bus
     *incXSprite = 0; *incYSprite = 0;
 
     //si un prochain arret existe?
@@ -230,31 +239,31 @@ void deplaceBus(Tbus myBus, TsensParcours sens_deplacement, int *incXSprite, int
     }
     else //s'il existe:
     {
-        //soit on est arrivé, soit on est en cours de trajet
-        //récupération des coordonnées
+        //soit on est arrivï¿½, soit on est en cours de trajet
+        //rï¿½cupï¿½ration des coordonnï¿½es
         xdep = getPosXBus(myBus);
         ydep = getPosYBus(myBus);
         xarr = getPosXListeStation(dest);
         yarr = getPosYListeStation(dest);
 
-        //sommes-nous arrivés?
+        //sommes-nous arrivï¿½s?
         if ((abs(xdep-xarr)<=pas) && (abs(ydep-yarr)<=pas)){
-            //alors mise à jour de la station actuelle du bus
+            //alors mise ï¿½ jour de la station actuelle du bus
             setActualStation( myBus, dest );
             printf("\nLe Bus id%d arrive sur la station id%d %s",getIdBus(myBus),getIdStation(getPtrData(getActualStation(myBus))),getNomStation(getPtrData(getActualStation(myBus))));
         }
         else{
-            //sinon on calcule les offsets de déplacements pour la boucle main qui réalise les affichages
+            //sinon on calcule les offsets de dï¿½placements pour la boucle main qui rï¿½alise les affichages
             ratio = (float)(abs(yarr-ydep))/(float)(abs(xarr-xdep)); //div euclydienne
 
-            //algo de Bresenham "simplifié de façon ad hoc" et non optimisé (à cause des floats)
+            //algo de Bresenham "simplifiï¿½ de faï¿½on ad hoc" et non optimisï¿½ (ï¿½ cause des floats)
             if (xarr>xdep) *incXSprite = pas;
             else if (xarr<xdep) *incXSprite = -pas;
 
-            if (yarr>ydep) *incYSprite = (int)((float)(pas) * ratio);             //pour un déplacement proportionnel en Y selon Y/X
+            if (yarr>ydep) *incYSprite = (int)((float)(pas) * ratio);             //pour un dï¿½placement proportionnel en Y selon Y/X
             else if (yarr<ydep) *incYSprite = (int)((float)(-pas) * ratio);
 
-            //remmarque: si xarr==ydep alors *incXSprite reste à 0, idem en Y
+            //remmarque: si xarr==ydep alors *incXSprite reste ï¿½ 0, idem en Y
 
             //maj des coord du bus
             setPosXBus(myBus, getPosXBus(myBus) + *incXSprite);
@@ -275,7 +284,7 @@ void setPositionSurLaLigneDeBus( Tbus myBus, TlisteStation myStation);
 
 void busSurStation( Tbus myBus, TlisteStation myStation, TsensParcours sens){
 
-    //Exemple encapsulation: on a préféré les fonctions setteurs à un accés direct aux champs
+    //Exemple encapsulation: on a prï¿½fï¿½rï¿½ les fonctions setteurs ï¿½ un accï¿½s direct aux champs
 
     setPositionSurLaLigneDeBus( myBus, myStation);
     //myBus->positionSurLaLigneDeBus = myStation;  //interdit
@@ -289,7 +298,7 @@ void busSurStation( Tbus myBus, TlisteStation myStation, TsensParcours sens){
     setPosYBus( myBus, getPosYListeStation( myStation ) );
     //myBus->posYBus = getPosYListeStation( myStation );
 
-    //idem : on passe ci-dessous par les getteurs et non par un accés direct via les champs
+    //idem : on passe ci-dessous par les getteurs et non par un accï¿½s direct via les champs
     printf("\nBus id%d est en (x = %d, y = %d) sur la ligne %d, station %s", getIdBus(myBus), getPosXBus(myBus), getPosYBus(myBus), getIdLigneActuelleDuBus(myBus), getNomStation(getPtrData(myStation)));
 }
 
@@ -316,4 +325,5 @@ void afficheCoordonneesBus( Tbus myBus ){
 }
 
 
-//Créer ci-dessous vos fonctions
+//Crï¿½er ci-dessous vos fonctions
+
