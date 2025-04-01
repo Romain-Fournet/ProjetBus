@@ -1,9 +1,11 @@
 //NOM prenom etudiant 1 :
 //NOM prenom etudiant 2 :
 
+#define SDL_MAIN_HANDLED
 #include "SDL.h"
 #include "maSDL.h"
 #include "SDL_VSYNC.h"
+#include "sort.h"
 
 //#include "types.h"
 #include "ligneBus.h"

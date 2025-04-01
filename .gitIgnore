@@ -3,3 +3,4 @@ bin
 obj
 SDL2
 .DS_Store
+main.exe
