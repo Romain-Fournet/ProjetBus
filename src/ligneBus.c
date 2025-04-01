@@ -343,3 +343,57 @@ void afficheCoordonneesBus( Tbus myBus ){
 
 //Cr�er ci-dessous vos fonctions
 
+TlisteStation creeLigneDeBus4(TlisteStation ligne1, TlisteStation ligne2) {
+    TlisteStation newLigne;
+    TlisteStation currentStation;
+    Tstation *troncon;
+    int dist;
+
+    // Initialiser la nouvelle liste
+    initListe(&newLigne);
+
+    // Ajouter toutes les stations et tronçons de la première ligne
+    currentStation = ligne1;
+    while (currentStation != NULL) {
+        newLigne = ajoutEnFin(newLigne, getPtrData(currentStation));
+
+        if (getNextCell(currentStation) != NULL) {
+            dist = getDistStations(*getPtrData(currentStation), *getPtrData(getNextCell(currentStation)));
+            troncon = creeTroncon(
+                getIdLigneTroncon(getPtrData(currentStation)),
+                getPtrData(currentStation),
+                getPtrData(getNextCell(currentStation)),
+                dist,
+                dist
+            );
+            newLigne = ajoutEnFin(newLigne, troncon);
+        }
+
+        currentStation = getNextCell(currentStation);
+    }
+
+    // Ajouter toutes les stations et tronçons de la deuxième ligne, sauf la première station (pour éviter un doublon)
+    currentStation = ligne2;
+    if (currentStation != NULL) {
+        currentStation = getNextCell(currentStation); // Ignorer la première station de la deuxième ligne
+    }
+    while (currentStation != NULL) {
+        newLigne = ajoutEnFin(newLigne, getPtrData(currentStation));
+
+        if (getNextCell(currentStation) != NULL) {
+            dist = getDistStations(*getPtrData(currentStation), *getPtrData(getNextCell(currentStation)));
+            troncon = creeTroncon(
+                getIdLigneTroncon(getPtrData(currentStation)),
+                getPtrData(currentStation),
+                getPtrData(getNextCell(currentStation)),
+                dist,
+                dist
+            );
+            newLigne = ajoutEnFin(newLigne, troncon);
+        }
+
+        currentStation = getNextCell(currentStation);
+    }
+
+    return newLigne;
+}

@@ -47,8 +47,8 @@ int main(int argc, char* argv[])
 		else
 		{
         //A COMMENTER quand vous en aurez assez de cliquer sur ces popups ^^
-        message("Welcome in BusProject","Ceci est un point de depart de votre future interface de vos lignes de Bus");
-        message("et fin","ECHAP->quitter, + vos touches + D/V pour sauvegarer/restaurer un bus et le reseau de lignes");
+        // message("Welcome in BusProject","Ceci est un point de depart de votre future interface de vos lignes de Bus");
+        // message("et fin","ECHAP->quitter, + vos touches + D/V pour sauvegarer/restaurer un bus et le reseau de lignes");
 
         /**********************************************************************/
         /*                                                                    */
@@ -60,14 +60,15 @@ int main(int argc, char* argv[])
         TlisteStation ligne1 = creeLigneDeBus1();
         TlisteStation ligne2 = creeLigneDeBus2();
         TlisteStation ligne3 = creeLigneDeBus3();
+        TlisteStation ligne4 = creeLigneDeBus4(ligne1, ligne3);
 
-        TlisteStation lignesBus[3] = {ligne1, ligne2, ligne3}; 
+
+        TlisteStation lignesBus[4] = {ligne1, ligne2, ligne3, ligne4};
 
         //creation d'un (seul) bus
         Tbus bus1 = creeBus(1,ligne1);
-
         //affiche sur la console les stations et troncons des lignes de bus
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < 4; i++){
                 afficheConsoleLigneBus(lignesBus[i]);
         }
 
@@ -127,6 +128,12 @@ int main(int argc, char* argv[])
 
                         printf("\nTouche 3, Bus au depart de la ligne 3\n");
                         busSurStation(bus1, ligne3, depart_vers_arrivee);
+                        Affiche_Sprite(&gSpriteBus, gRenderer, getPosXBus( bus1 ), getPosYBus( bus1 ), getIdFrame(frame));
+                }
+                if ( pKeyStates[SDL_SCANCODE_4] ){ //TEST
+
+                        printf("\nTouche 4, Bus au depart de la ligne 3\n");
+                        busSurStation(bus1, ligne4, depart_vers_arrivee);
                         Affiche_Sprite(&gSpriteBus, gRenderer, getPosXBus( bus1 ), getPosYBus( bus1 ), getIdFrame(frame));
                 }
                 if ( pKeyStates[SDL_SCANCODE_ESCAPE] ){

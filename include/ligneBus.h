@@ -22,7 +22,7 @@ bool ligneBusVide( TlisteStation l);
 int getPosXListeStation( TlisteStation myStationInListe );
 int getPosYListeStation( TlisteStation myStationInListe );
 
-//renseigne incX et incY pour le déplacement du sprite dans le main, ET modifie la position du bus qd il atteint les coord X Y de la station d'arrivée
+//renseigne incX et incY pour le dï¿½placement du sprite dans le main, ET modifie la position du bus qd il atteint les coord X Y de la station d'arrivï¿½e
 void deplaceBus(Tbus myBus, TsensParcours sens_deplacement, int *incX, int *incY);
 
 void busSurStation( Tbus myBus, TlisteStation myStation, TsensParcours sens);
@@ -30,6 +30,7 @@ void busSurLigneX( Tbus myBus, int idLigneX );
 TlisteStation stationSuivantePourLeBus(Tbus myBus);
 
 void afficheCoordonneesBus( Tbus myBus );
+TlisteStation creeLigneDeBus4(TlisteStation ligne1, TlisteStation ligne2);
 
 // ****   Lister ci-dessous vos fonctions  ****
 
