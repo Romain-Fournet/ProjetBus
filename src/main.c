@@ -38,8 +38,8 @@ int main(int argc, char* argv[])
 	else
 	{
 		//Load media
-		if( !loadAnimation(&gSpriteBus, gRenderer, "../data/4bus.png")
-            || !loadSprite(&gSpriteArretBus, gRenderer, "../data/arret_bus_50x27.png"))
+		if( !loadAnimation(&gSpriteBus, gRenderer, "./data/4bus.png")
+            || !loadSprite(&gSpriteArretBus, gRenderer, "./data/arret_bus_50x27.png"))
         {
 			fprintf(stdout,"echec de chargement du sprite (%s)\n",SDL_GetError());
 		}
