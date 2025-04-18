@@ -63,58 +63,25 @@ Tstation *creeTroncon(int idLigneBus, Tstation *depart, Tstation *arrivee, int c
     return newStation;
 }
 
-int compterNombreLignes(char *nom_fichier) {
-    FILE *fichier = fopen(nom_fichier, "r");
-    if (fichier == NULL) {
-        printf("Erreur d'ouverture du fichier : %s\n", nom_fichier);
-        return -1;
-    }
-
-    char ligne[100];  
-    int nombreLignes = 0;
-
-    while (fgets(ligne, sizeof(ligne), fichier)) {
-        if (strncmp(ligne, "Ligne:", 6) == 0) { 
-            nombreLignes++;
-        }
-    }
-
-    fclose(fichier);
-    return nombreLignes;
-}
-
-TlisteStation *chargerLignes(char *nom_fichier, int *nbLignes){
 TlisteStation chargerLigne(char *nom_fichier)
 {
     FILE *fichier = fopen(nom_fichier, "r");
     TlisteStation newLigne;
-    *nbLignes = compterNombreLignes(nom_fichier);
-    TlisteStation *lignes = malloc(sizeof(TlisteStation) * *nbLignes);
-    int ligne_actuelle = 0;
+    initListe(&newLigne);
 
     if (fichier == NULL)
     {
         printf("Erreur d'ouverture du fichier ! | Nom fichier %s\n", nom_fichier);
-        return lignes;
+        return newLigne;
     }
 
-    int id_arret, id_ligne, x, y;
+    int id, x, y;
     char nom[50];
     // Initialisation du départ
     fscanf(fichier, "%d;%49[^;];%d;%d\n", &id, nom, &x, &y);
 
     Tstation *dep = creeArret(x, y, nom, id);
     newLigne = ajoutEnFin(newLigne, dep);
-
-    //Tant qu'il y a des lignes (ex: "Ligne: 1") dans le fichier
-    while(fscanf(fichier, "Ligne: %d\n", &id_ligne) == 1){
-        //On ititialise une nouvelle ligne
-        initListe(&newLigne);
-    
-        //Ajout de la première station
-        fscanf(fichier, "%d;%49[^;];%d;%d\n", &id_arret, nom, &x, &y);
-        Tstation *dep = creeArret(x, y, nom, id_arret);
-        newLigne = ajoutEnFin(newLigne, dep);
 
     while (fscanf(fichier, "%d;%49[^;];%d;%d\n", &id, nom, &x, &y) == 4)
     {
@@ -125,15 +92,6 @@ TlisteStation chargerLigne(char *nom_fichier)
         newLigne = ajoutEnFin(newLigne, arr);
         dep = arr;
     }
-        //Ajout des autres stations avec les troncons
-        while (fscanf(fichier, "%d;%49[^;];%d;%d\n", &id_arret, nom, &x, &y) == 4) {
-            Tstation *arr = creeArret(x, y, nom, id_arret);
-            int dist = getDistStations(*dep, *arr);
-            Tstation *troncon = creeTroncon(id_arret, dep, arr, dist, dist);
-            newLigne = ajoutEnFin(newLigne, troncon);
-            newLigne = ajoutEnFin(newLigne, arr);
-            dep = arr;
-        }
 
     return newLigne;
 }
@@ -157,16 +115,6 @@ TlisteStation creeLigneDeBus1()
     newLigne = ajoutEnFin(newLigne, troncon);
     newLigne = ajoutEnFin(newLigne, dep);
     */
-        lignes[ligne_actuelle] = newLigne;
-        ligne_actuelle++;
-    }
-
-    return lignes;
-}
-
-
-TlisteStation *creeLignesDeBus(int *nbLignes){
-    return chargerLignes("data/Stations_et_lignesDeBus.data", nbLignes);
 }
 
 TlisteStation creeLigneDeBus2()
