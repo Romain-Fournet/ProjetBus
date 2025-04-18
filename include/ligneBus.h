@@ -9,9 +9,8 @@ Tstation *creeArret( int posX, int posY, char* nomStation, int idStation);
 Tstation *creeTroncon( int idLigneBus, Tstation* depart, Tstation *arrivee, int coutTemps, int coutDistance);
 
 //TlisteStation* initReseauLignesDeBus(int *nbLignes);
-TlisteStation creeLigneDeBus1(void);
-TlisteStation creeLigneDeBus2(void);
-TlisteStation creeLigneDeBus3(void);
+TlisteStation *chargerLignes(char *nom_fichier, int *nbLignes);
+TlisteStation *creeLignesDeBus(int *nbLignes);
 void afficheConsoleLigneBus( TlisteStation l);
 
 TlisteStation getNextStation( TlisteStation l);
