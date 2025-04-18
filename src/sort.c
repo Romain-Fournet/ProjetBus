@@ -16,24 +16,25 @@ int tailleListe(TlisteStation listeStation)
     return i;
 }
 
-void sortCostMaintenance(Tstation *tab[], int len)
+void sortCoutMaintenance(Tstation* tab[], int len)
 {
+    char nom[30];
     for (int i = 0; i < len - 1; i++)
     {
         for (int j = 0; j < len - i - 1; j++)
         {
             if (getCoutMaintenance(tab[j]) < getCoutMaintenance(tab[j + 1]))
             {
-                Tstation *temp = tab[j];
+                Tstation* temp = tab[j];
                 tab[j] = tab[j + 1];
                 tab[j + 1] = temp;
             }
         }
     }
-    printf("Stations triées par coût de maintenance décroissant :\n");
+    printf("Stations triees par cout de maintenance decroissant :\n");
     for (int i = 0; i < len; i++)
     {
-        printf("Station %d : Coût de maintenance = %d\n", getIdStation(tab[i]), getCoutMaintenance(tab[i]));
+        printf("Station %d (%s) : Cout de maintenance = %d\n", getIdStation(tab[i]), getNomStation(tab[i])[0] == '\0' ? "TRONCON" : getNomStation(tab[i]), getCoutMaintenance(tab[i]));
     }
 }
 
@@ -50,7 +51,7 @@ int compareDates(TDate date1, TDate date2)
     return date1.jour - date2.jour;
 }
 
-void sortDateDerniereMaintenance(Tstation *tab[], int len)
+void sortDateDerniereMaintenance(Tstation* tab[], int len)
 {
     for (int i = 0; i < len - 1; i++)
     {
@@ -64,26 +65,31 @@ void sortDateDerniereMaintenance(Tstation *tab[], int len)
             }
         }
     }
-    printf("Stations triées par date de maintenance de façon croissante :\n");
+    printf("Stations triees par date de maintenance de facon croissante :\n");
     for (int i = 0; i < len; i++)
     {
-        printf("Station %d : Date de croissante = %d\n", getIdStation(tab[i]), getDateDerniereMaintenance(tab[i]));
+        TDate date = getDateDerniereMaintenance(tab[i]);
+        printf("Station %d (%s): Date de maintenance = %02d/%02d/%04d\n", 
+            getIdStation(tab[i]), 
+            getNomStation(tab[i])[0] == '\0' ? "TRONCON" : getNomStation(tab[i]), 
+            date.jour, 
+            date.mois, 
+            date.annee);
     }
 };
 
-void sort(TligneBus myLigne)
+void sort(TlisteStation myLigne)
 {
-    TlisteStation listeStation = myLigne.depart;
-    int len = tailleListe(listeStation);
-    Tstation *tab[len];
+    int len = tailleListe(myLigne);
+    Tstation* tab[len];
     for (int i = 0; i < len; i++)
     {
-        tab[i] = listeStation->pdata;
-        listeStation = listeStation->suiv;
+        tab[i] = getPtrData(myLigne);
+        myLigne = getNextCell(myLigne);
     }
     // Tris à bulles:
     // Tri par coût de maintenance (décroissant)
-    sortCostMaintenance(tab, len);
+    sortCoutMaintenance(tab, len);
     // Tri par date de maintenance (croissant)
     sortDateDerniereMaintenance(tab, len);
 }
