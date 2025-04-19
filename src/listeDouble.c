@@ -100,3 +100,29 @@ T_liste getPrevCell(T_liste l){
 }
 
 //A vous la suite si besoin
+
+T_liste getLastCell(T_liste l){
+    if (l == NULL) {
+        return NULL;
+    }
+
+    T_liste courant = l;
+    while (courant->suiv != NULL) {
+        courant = courant->suiv;
+    }
+
+    return courant;
+}
+
+T_liste getFirstCell(T_liste l){
+    if (l == NULL) {
+        return NULL;
+    }
+
+    T_liste courant = l;
+    while (courant->prec != NULL) {
+        courant = courant->prec;
+    }
+
+    return courant;
+}

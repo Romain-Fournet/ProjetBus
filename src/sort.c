@@ -16,7 +16,7 @@ int tailleListe(TlisteStation listeStation)
     return i;
 }
 
-void sortCostMaintenance(Tstation *tab[], int len)
+void sortCoutMaintenance(Tstation *tab[], int len)
 {
     for (int i = 0; i < len - 1; i++)
     {
@@ -30,10 +30,10 @@ void sortCostMaintenance(Tstation *tab[], int len)
             }
         }
     }
-    printf("Stations triées par coût de maintenance décroissant :\n");
+    printf("Stations triees par cout de maintenance decroissant :\n");
     for (int i = 0; i < len; i++)
     {
-        printf("Station %d : Coût de maintenance = %d\n", getIdStation(tab[i]), getCoutMaintenance(tab[i]));
+        printf("Station %d (%s) : Cout de maintenance = %d\n", getIdStation(tab[i]), getNomStation(tab[i])[0] == '\0' ? "TRONCON" : getNomStation(tab[i]), getCoutMaintenance(tab[i]));
     }
 }
 
@@ -64,26 +64,31 @@ void sortDateDerniereMaintenance(Tstation *tab[], int len)
             }
         }
     }
-    printf("Stations triées par date de maintenance de façon croissante :\n");
+    printf("Stations triees par date de maintenance de facon croissante :\n");
     for (int i = 0; i < len; i++)
     {
-        printf("Station %d : Date de croissante = %d\n", getIdStation(tab[i]), getDateDerniereMaintenance(tab[i]));
+        TDate date = getDateDerniereMaintenance(tab[i]);
+        printf("Station %d (%s): Date de maintenance = %02d/%02d/%04d\n",
+               getIdStation(tab[i]),
+               getNomStation(tab[i])[0] == '\0' ? "TRONCON" : getNomStation(tab[i]),
+               date.jour,
+               date.mois,
+               date.annee);
     }
 };
 
-void sort(TligneBus myLigne)
+void sort(TlisteStation myLigne)
 {
-    TlisteStation listeStation = myLigne.depart;
-    int len = tailleListe(listeStation);
+    int len = tailleListe(myLigne);
     Tstation *tab[len];
     for (int i = 0; i < len; i++)
     {
-        tab[i] = listeStation->pdata;
-        listeStation = listeStation->suiv;
+        tab[i] = getPtrData(myLigne);
+        myLigne = getNextCell(myLigne);
     }
     // Tris à bulles:
     // Tri par coût de maintenance (décroissant)
-    sortCostMaintenance(tab, len);
+    sortCoutMaintenance(tab, len);
     // Tri par date de maintenance (croissant)
     sortDateDerniereMaintenance(tab, len);
 }
