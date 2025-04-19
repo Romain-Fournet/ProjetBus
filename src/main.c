@@ -61,6 +61,8 @@ int main(int argc, char *argv[])
 
                         TlisteStation *lignesBus = creeLignesDeBus(nbLignes); 
 
+                        printf("Nombre de lignes : %d", *nbLignes);
+
                         Tbus bus1 = creeBus(1,lignesBus[0]);
 
                         // affiche sur la console les stations et troncons des lignes de bus
@@ -159,7 +161,7 @@ int main(int argc, char *argv[])
                                 Deplace_Sprite(&gSpriteBus, gRenderer, incXDeplSpriteBus1, incYDeplSpriteBus1, getIdFrame(frame));
 
                                 // reaffichage e chaque tour de toutes les stations
-                                for (int i = 0; i < 3; i++)
+                                for (int i = 0; i < *nbLignes; i++)
                                 {
                                         DessineUneLigneBus(lignesBus[i], gSpriteArretBus, gRenderer);
                                 }

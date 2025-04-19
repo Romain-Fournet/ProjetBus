@@ -63,130 +63,73 @@ Tstation *creeTroncon(int idLigneBus, Tstation *depart, Tstation *arrivee, int c
     return newStation;
 }
 
-TlisteStation chargerLigne(char *nom_fichier)
+int compterNombreLignes(char *nom_fichier) {
+    FILE *fichier = fopen(nom_fichier, "r");
+    if (fichier == NULL) {
+        printf("Erreur d'ouverture du fichier : %s\n", nom_fichier);
+        return -1;
+    }
+
+    char ligne[100];  
+    int nombreLignes = 0;
+
+    while (fgets(ligne, sizeof(ligne), fichier)) {
+        if (strncmp(ligne, "Ligne:", 6) == 0) { 
+            nombreLignes++;
+        }
+    }
+
+    fclose(fichier);
+    return nombreLignes;
+}
+
+TlisteStation *chargerLignes(char *nom_fichier, int *nbLignes)
 {
     FILE *fichier = fopen(nom_fichier, "r");
     TlisteStation newLigne;
-    initListe(&newLigne);
+
+    *nbLignes = compterNombreLignes(nom_fichier);
+    TlisteStation *lignes = malloc(sizeof(TlisteStation) * *nbLignes);
+    int ligne_actuelle = 0;
 
     if (fichier == NULL)
     {
         printf("Erreur d'ouverture du fichier ! | Nom fichier %s\n", nom_fichier);
-        return newLigne;
+        return lignes;
     }
 
-    int id, x, y;
+    int id_arret, id_ligne, x, y;
     char nom[50];
-    // Initialisation du départ
-    fscanf(fichier, "%d;%49[^;];%d;%d\n", &id, nom, &x, &y);
+    
+    //Tant qu'il y a des lignes (ex: "Ligne: 1") dans le fichier
+    while(fscanf(fichier, "Ligne: %d\n", &id_ligne) == 1){
+        //On ititialise une nouvelle ligne
+        initListe(&newLigne);
+    
+        //Ajout de la première station
+        fscanf(fichier, "%d;%49[^;];%d;%d\n", &id_arret, nom, &x, &y);
+        Tstation *dep = creeArret(x, y, nom, id_arret);
+        newLigne = ajoutEnFin(newLigne, dep);
 
-    Tstation *dep = creeArret(x, y, nom, id);
-    newLigne = ajoutEnFin(newLigne, dep);
+        //Ajout des autres stations avec les troncons
+        while (fscanf(fichier, "%d;%49[^;];%d;%d\n", &id_arret, nom, &x, &y) == 4) {
+            Tstation *arr = creeArret(x, y, nom, id_arret);
+            int dist = getDistStations(*dep, *arr);
+            Tstation *troncon = creeTroncon(id_arret, dep, arr, dist, dist);
+            newLigne = ajoutEnFin(newLigne, troncon);
+            newLigne = ajoutEnFin(newLigne, arr);
+            dep = arr;
+        }
 
-    while (fscanf(fichier, "%d;%49[^;];%d;%d\n", &id, nom, &x, &y) == 4)
-    {
-        Tstation *arr = creeArret(x, y, nom, id);
-        int dist = getDistStations(*dep, *arr);
-        Tstation *troncon = creeTroncon(id, dep, arr, dist, dist);
-        newLigne = ajoutEnFin(newLigne, troncon);
-        newLigne = ajoutEnFin(newLigne, arr);
-        dep = arr;
+        lignes[ligne_actuelle] = newLigne;
+        ligne_actuelle++;
     }
 
-    return newLigne;
+    return lignes;
 }
 
-TlisteStation creeLigneDeBus1()
-{
-    return chargerLigne("data/Stations_et_lignesDeBus.data");
-    /*
-    dep = creeArret(10,410,"Jacques Brel",3);
-    troncon = creeTroncon(1,arr,dep,40,160);
-    newLigne = ajoutEnFin(newLigne, troncon);
-    newLigne = ajoutEnFin(newLigne, dep);
-
-    arr = creeArret(200,350,"Saint Exupery",4);
-    troncon = creeTroncon(1,dep,arr,45,200);
-    newLigne = ajoutEnFin(newLigne, troncon);
-    newLigne = ajoutEnFin(newLigne, arr);
-
-    dep = creeArret(500,410,"Stalingrad",5);
-    troncon = creeTroncon(1,arr,dep,40,160);
-    newLigne = ajoutEnFin(newLigne, troncon);
-    newLigne = ajoutEnFin(newLigne, dep);
-    */
-}
-
-TlisteStation creeLigneDeBus2()
-{
-    TlisteStation newLigne;
-    Tstation *dep, *troncon, *arr;
-
-    initListe(&newLigne);
-
-    // creation en m�moire des stations et troncons
-    dep = creeArret(10, 100, "Republique", 6);
-    arr = creeArret(30, 300, "Jules Ferry", 7);
-    int dist = getDistStations(*dep, *arr);
-    troncon = creeTroncon(2, dep, arr, dist, dist);
-
-    // ajout de ces stations et troncons dans la liste doublement chain�e  (champ pdata)
-    newLigne = ajoutEnFin(newLigne, dep); // donc la t�te)
-    newLigne = ajoutEnFin(newLigne, troncon);
-    newLigne = ajoutEnFin(newLigne, arr);
-    /*
-    dep = creeArret(100,40,"PLace d'armes",8);
-    troncon = creeTroncon(2,arr,dep,40,160);
-    newLigne = ajoutEnFin(newLigne, troncon);
-    newLigne = ajoutEnFin(newLigne, dep);
-
-    arr = creeArret(300,30,"Place de l'etoile",9);
-    troncon = creeTroncon(2,dep,arr,45,200);
-    newLigne = ajoutEnFin(newLigne, troncon);
-    newLigne = ajoutEnFin(newLigne, arr);
-
-    dep = creeArret(400,210,"Bobigny",10);
-    troncon = creeTroncon(2,arr,dep,40,160);
-    newLigne = ajoutEnFin(newLigne, troncon);
-    newLigne = ajoutEnFin(newLigne, dep);
-*/
-    return newLigne;
-}
-
-TlisteStation creeLigneDeBus3()
-{
-    TlisteStation newLigne;
-    Tstation *dep, *troncon, *arr;
-
-    initListe(&newLigne);
-
-    // creation en m�moire des stations et troncons
-    dep = creeArret(150, 10, "Clemenceau", 11);
-    arr = creeArret(300, 100, "Montmartre", 12);
-    int dist = getDistStations(*dep, *arr);
-    troncon = creeTroncon(3, dep, arr, dist, dist);
-
-    // ajout de ces stations et troncons dans la liste doublement chain�e  (champ pdata)
-    newLigne = ajoutEnFin(newLigne, dep); // donc la t�te)
-    newLigne = ajoutEnFin(newLigne, troncon);
-    newLigne = ajoutEnFin(newLigne, arr);
-    /*
-        dep = creeArret(600,610,"Tour eiffel",13);
-        troncon = creeTroncon(3,arr,dep,40,160);
-        newLigne = ajoutEnFin(newLigne, troncon);
-        newLigne = ajoutEnFin(newLigne, dep);
-
-        arr = creeArret(70,350,"Les invalides",14);
-        troncon = creeTroncon(3,dep,arr,45,200);
-        newLigne = ajoutEnFin(newLigne, troncon);
-        newLigne = ajoutEnFin(newLigne, arr);
-
-        dep = creeArret(150,510,"Gare du nord",15);
-        troncon = creeTroncon(3,arr,dep,40,160);
-        newLigne = ajoutEnFin(newLigne, troncon);
-        newLigne = ajoutEnFin(newLigne, dep);
-        */
-    return newLigne;
+TlisteStation *creeLignesDeBus(int *nbLignes){
+    return chargerLignes("data/Stations_et_lignesDeBus.data", nbLignes);
 }
 
 void afficheConsoleLigneBus(TlisteStation l)

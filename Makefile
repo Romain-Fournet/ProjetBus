@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = -Iinclude $(shell sdl2-config --cflags)  # Options pour compiler les fichiers .c
 LDFLAGS = $(shell sdl2-config --libs) -lSDL2_image  # Options pour l'édition des liens
 
-SRC = src/SDL_VSYNC.c src/maSDL.c src/types.c src/listeDouble.c src/ligneBus.c src/main.c  # Tous les fichiers source
+SRC = src/SDL_VSYNC.c src/maSDL.c src/types.c src/listeDouble.c src/ligneBus.c src/main.c src/sort.c # Tous les fichiers source
 OBJ = $(patsubst src/%.c, obj/%.o, $(SRC))  # Transforme chaque .c en .o dans obj/
 BIN = bin/main  # Nom de l'exécutable
 
