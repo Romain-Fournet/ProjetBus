@@ -46,7 +46,10 @@ int main(int argc, char *argv[])
                 {
                         // A COMMENTER quand vous en aurez assez de cliquer sur ces popups ^^
                         //  message("Welcome in BusProject","Ceci est un point de depart de votre future interface de vos lignes de Bus");
-                        //  message("et fin","ECHAP->quitter, + vos touches + D/V pour sauvegarer/restaurer un bus et le reseau de lignes");
+            
+			fprintf(stdout,"echec de chargement du sprite (%s)\n",SDL_GetError());
+		}
+		
 
                         /**********************************************************************/
                         /*                                                                    */
@@ -54,18 +57,14 @@ int main(int argc, char *argv[])
                         /*                                                                    */
                         /**********************************************************************/
 
-                        TlisteStation ligne1 = creeLigneDeBus1();
-                        TlisteStation ligne2 = creeLigneDeBus2();
-                        TlisteStation ligne3 = creeLigneDeBus3();
-                        TlisteStation ligne4 = creeLigneDeBus4(ligne1, ligne2);
+                        int *nbLignes = malloc(sizeof(int)); 
 
-                        TlisteStation lignesBus[4] = {ligne1, ligne2, ligne3, ligne4};
+                        TlisteStation *lignesBus = creeLignesDeBus(nbLignes); 
 
-                        // creation d'un (seul) bus
-                        Tbus bus1 = creeBus(1, ligne1);
+                        Tbus bus1 = creeBus(1,lignesBus[0]);
+
                         // affiche sur la console les stations et troncons des lignes de bus
-                        for (int i = 0; i < 4; i++)
-                        {
+                        for(int i = 0; i < *nbLignes; i++){
                                 afficheConsoleLigneBus(lignesBus[i]);
                         }
 
@@ -120,28 +119,28 @@ int main(int argc, char *argv[])
                                 {
 
                                         printf("\nTouche 1, Bus au depart de la ligne 1\n");
-                                        busSurStation(bus1, ligne1, depart_vers_arrivee);
+                                        busSurStation(bus1, lignesBus[0], depart_vers_arrivee);
                                         Affiche_Sprite(&gSpriteBus, gRenderer, getPosXBus(bus1), getPosYBus(bus1), getIdFrame(frame));
                                 }
                                 if (pKeyStates[SDL_SCANCODE_2])
                                 {
 
                                         printf("\nTouche 2, Bus au depart de la ligne 2\n");
-                                        busSurStation(bus1, ligne2, depart_vers_arrivee);
+                                        busSurStation(bus1, lignesBus[1], depart_vers_arrivee);
                                         Affiche_Sprite(&gSpriteBus, gRenderer, getPosXBus(bus1), getPosYBus(bus1), getIdFrame(frame));
                                 }
                                 if (pKeyStates[SDL_SCANCODE_3])
                                 {
 
                                         printf("\nTouche 3, Bus au depart de la ligne 3\n");
-                                        busSurStation(bus1, ligne3, depart_vers_arrivee);
+                                        busSurStation(bus1, lignesBus[2], depart_vers_arrivee);
                                         Affiche_Sprite(&gSpriteBus, gRenderer, getPosXBus(bus1), getPosYBus(bus1), getIdFrame(frame));
                                 }
                                 if (pKeyStates[SDL_SCANCODE_4])
                                 {
 
                                         printf("\nTouche 4, Bus au depart de la ligne 3\n");
-                                        busSurStation(bus1, ligne4, depart_vers_arrivee);
+                                        busSurStation(bus1, lignesBus[3], depart_vers_arrivee);
                                         Affiche_Sprite(&gSpriteBus, gRenderer, getPosXBus(bus1), getPosYBus(bus1), getIdFrame(frame));
                                 }
                                 if (pKeyStates[SDL_SCANCODE_ESCAPE])
@@ -173,7 +172,7 @@ int main(int argc, char *argv[])
                         }
                         // fin boucle du jeu
                 }
-        }
+
 
         // Free resources and close SDL
         free_Ltexture(&gSpriteBus);
@@ -181,4 +180,5 @@ int main(int argc, char *argv[])
         close(gWindow, gRenderer);
 
         return 0;
+        
 }
