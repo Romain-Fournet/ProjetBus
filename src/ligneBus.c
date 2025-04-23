@@ -329,3 +329,56 @@ void afficheCoordonneesBus(Tbus myBus)
 
 // Cr�er ci-dessous vos fonctions
 
+void ajouterStationsEtTroncons(TlisteStation *newLigne, TlisteStation ligne)
+{
+    TlisteStation currentStation = ligne;
+    Tstation *troncon;
+    int dist;
+
+    while (currentStation != NULL)
+    {
+        if (getTypeNoeud(getPtrData(currentStation)) == ARRET)
+        {
+            *newLigne = ajoutEnFin(*newLigne, getPtrData(currentStation));
+        }
+        else if (getTypeNoeud(getPtrData(currentStation)) == TRONCON)
+        {
+            dist = getDistStations(*getPtrData(currentStation), *getPtrData(getNextCell(currentStation)));
+            troncon = creeTroncon(
+                getIdLigneTroncon(getPtrData(currentStation)),
+                getPtrData(getPrevCell(currentStation)),
+                getPtrData(getNextCell(currentStation)),
+                dist,
+                dist);
+            *newLigne = ajoutEnFin(*newLigne, troncon);
+        }
+        currentStation = getNextCell(currentStation);
+    }
+}
+
+TlisteStation jonctionLigneDeBus(TlisteStation ligne1, TlisteStation ligne2)
+{
+    TlisteStation newLigne;
+    Tstation *troncon;
+    int dist;
+    TlisteStation lastStation = getLastCell(ligne1);
+
+    initListe(&newLigne);
+
+    
+    ajouterStationsEtTroncons(&newLigne, ligne1);
+
+    
+    dist = getDistStations(*getPtrData(lastStation), *getPtrData(ligne2));
+    troncon = creeTroncon(
+        (-1),
+        getPtrData(lastStation),
+        getPtrData(ligne2),
+        dist,
+        dist);
+    newLigne = ajoutEnFin(newLigne, troncon);
+
+    
+    ajouterStationsEtTroncons(&newLigne, ligne2);
+    return newLigne;
+}
