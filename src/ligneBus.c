@@ -63,18 +63,22 @@ Tstation *creeTroncon(int idLigneBus, Tstation *depart, Tstation *arrivee, int c
     return newStation;
 }
 
-int compterNombreLignes(char *nom_fichier) {
+int compterNombreLignes(char *nom_fichier)
+{
     FILE *fichier = fopen(nom_fichier, "r");
-    if (fichier == NULL) {
+    if (fichier == NULL)
+    {
         printf("Erreur d'ouverture du fichier : %s\n", nom_fichier);
         return -1;
     }
 
-    char ligne[100];  
+    char ligne[100];
     int nombreLignes = 0;
 
-    while (fgets(ligne, sizeof(ligne), fichier)) {
-        if (strncmp(ligne, "Ligne:", 6) == 0) { 
+    while (fgets(ligne, sizeof(ligne), fichier))
+    {
+        if (strncmp(ligne, "Ligne:", 6) == 0)
+        {
             nombreLignes++;
         }
     }
@@ -100,19 +104,21 @@ TlisteStation *chargerLignes(char *nom_fichier, int *nbLignes)
 
     int id_arret, id_ligne, x, y;
     char nom[50];
-    
-    //Tant qu'il y a des lignes (ex: "Ligne: 1") dans le fichier
-    while(fscanf(fichier, "Ligne: %d\n", &id_ligne) == 1){
-        //On ititialise une nouvelle ligne
+
+    // Tant qu'il y a des lignes (ex: "Ligne: 1") dans le fichier
+    while (fscanf(fichier, "Ligne: %d\n", &id_ligne) == 1)
+    {
+        // On ititialise une nouvelle ligne
         initListe(&newLigne);
-    
-        //Ajout de la première station
+
+        // Ajout de la première station
         fscanf(fichier, "%d;%49[^;];%d;%d\n", &id_arret, nom, &x, &y);
         Tstation *dep = creeArret(x, y, nom, id_arret);
         newLigne = ajoutEnFin(newLigne, dep);
 
-        //Ajout des autres stations avec les troncons
-        while (fscanf(fichier, "%d;%49[^;];%d;%d\n", &id_arret, nom, &x, &y) == 4) {
+        // Ajout des autres stations avec les troncons
+        while (fscanf(fichier, "%d;%49[^;];%d;%d\n", &id_arret, nom, &x, &y) == 4)
+        {
             Tstation *arr = creeArret(x, y, nom, id_arret);
             int dist = getDistStations(*dep, *arr);
             Tstation *troncon = creeTroncon(id_arret, dep, arr, dist, dist);
@@ -128,7 +134,8 @@ TlisteStation *chargerLignes(char *nom_fichier, int *nbLignes)
     return lignes;
 }
 
-TlisteStation *creeLignesDeBus(int *nbLignes){
+TlisteStation *creeLignesDeBus(int *nbLignes)
+{
     return chargerLignes("data/Stations_et_lignesDeBus.data", nbLignes);
 }
 
@@ -365,10 +372,8 @@ TlisteStation jonctionLigneDeBus(TlisteStation ligne1, TlisteStation ligne2)
 
     initListe(&newLigne);
 
-    
     ajouterStationsEtTroncons(&newLigne, ligne1);
 
-    
     dist = getDistStations(*getPtrData(lastStation), *getPtrData(ligne2));
     troncon = creeTroncon(
         (-1),
@@ -378,7 +383,48 @@ TlisteStation jonctionLigneDeBus(TlisteStation ligne1, TlisteStation ligne2)
         dist);
     newLigne = ajoutEnFin(newLigne, troncon);
 
-    
     ajouterStationsEtTroncons(&newLigne, ligne2);
     return newLigne;
+}
+
+void supprimerStation(TlisteStation *ligne, int idStation)
+{
+    TlisteStation current = *ligne;
+    Tstation *station;
+
+    while (current != NULL)
+    {
+        station = getPtrData(current);
+
+        if (getIdStation(station) == idStation)
+        {
+
+            if (current->prec == NULL && current->suiv == NULL)
+            { // Si la liste ne contient qu'un seul élément
+                *ligne = NULL;
+            };
+
+            if (current->prec == NULL && current->suiv != NULL)
+            { // Au début de la liste
+                *ligne = current->suiv->suiv;
+                current->suiv->suiv->prec = NULL;
+            };
+
+            if (current->prec != NULL && current->suiv != NULL)
+            { // Au mileu de la liste
+                current->prec->prec->suiv = current->suiv;
+                current->suiv->suiv->prec = current->prec;
+            };
+
+            if (current->prec != NULL && current->suiv == NULL)
+            { // A la fin de la liste
+                current->prec->prec->suiv = NULL;
+            };
+
+            printf("Station ID %d supprimée de la ligne.\n", idStation);
+            return;
+        }
+        current = current->suiv;
+    }
+    printf("Station ID %d introuvable dans la ligne.\n", idStation);
 }

@@ -34,5 +34,6 @@ void afficheCoordonneesBus( Tbus myBus );
 // ****   Lister ci-dessous vos fonctions  ****
 void ajouterStationsEtTroncons(TlisteStation *newLigne, TlisteStation ligne);
 TlisteStation jonctionLigneDeBus(TlisteStation ligne1, TlisteStation ligne2);
+void supprimerStation(TlisteStation *ligne, int idStation);
 
 #endif // LIGNEBUS_H_INCLUDED

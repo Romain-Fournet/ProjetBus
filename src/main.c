@@ -76,8 +76,10 @@ int main(int argc, char *argv[])
 
                 (*nbLignes)++;
 
-                printf("Nombre total de lignes après ajout : %d\n", *nbLignes);
+                printf("Nombre total de lignes apres ajout : %d\n", *nbLignes);
                 // JONCTION ENTRE DEUX LIGNES DE BUS POUR TEST (NE PAS EFFACER)
+
+
 
                 Tbus bus1 = creeBus(1, lignesBus[0]);
 
@@ -86,6 +88,15 @@ int main(int argc, char *argv[])
                 {
                         afficheConsoleLigneBus(lignesBus[i]);
                 }
+
+                // SUPRESSION D'UNE STATION DE BUS POUR TEST (NE PAS EFFACER)
+                supprimerStation(&lignesBus[0], 1);
+                printf("\n\nAprès suppression de la station 2 de la ligne 1 :\n\n");
+                for (int i = 0; i < *nbLignes; i++)
+                {
+                        afficheConsoleLigneBus(lignesBus[i]);
+                }
+                // SUPRESSION D'UNE STATION DE BUS POUR TEST (NE PAS EFFACER)
 
                 // Current animation frame
                 int frame = 0;
