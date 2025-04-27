@@ -79,8 +79,6 @@ int main(int argc, char *argv[])
                 printf("Nombre total de lignes apres ajout : %d\n", *nbLignes);
                 // JONCTION ENTRE DEUX LIGNES DE BUS POUR TEST (NE PAS EFFACER)
 
-
-
                 Tbus bus1 = creeBus(1, lignesBus[0]);
 
                 // affiche sur la console les stations et troncons des lignes de bus
@@ -91,12 +89,13 @@ int main(int argc, char *argv[])
 
                 // SUPRESSION D'UNE STATION DE BUS POUR TEST (NE PAS EFFACER)
                 supprimerStation(&lignesBus[0], 1);
-                printf("\n\nAprès suppression de la station 2 de la ligne 1 :\n\n");
-                for (int i = 0; i < *nbLignes; i++)
-                {
-                        afficheConsoleLigneBus(lignesBus[i]);
-                }
                 // SUPRESSION D'UNE STATION DE BUS POUR TEST (NE PAS EFFACER)
+
+                // TEST DE LA FONCTION CIRCULAIRE (NE PAS EFFACER)
+                circulaire(&lignesBus[0]);
+                // TEST DE LA FONCTION CIRCULAIRE (NE PAS EFFACER)
+
+                int tourCount = -1;
 
                 // Current animation frame
                 int frame = 0;
@@ -107,7 +106,6 @@ int main(int argc, char *argv[])
                 // boucle principale du jeu
                 int cont = 1;
                 int incXDeplSpriteBus1 = 0, incYDeplSpriteBus1 = 0; // deplacement du sprite du bus e chaque passage dans la boucle principale
-
                 while (cont != 0)
                 {
                         SDL_PumpEvents(); // do events
@@ -121,7 +119,6 @@ int main(int argc, char *argv[])
                         // deplaceBus gere le deplacement du bus sur sa ligne, selon son sens du parcours de la ligne;
                         // met e jour les variations en X et Y pour deplacer le sprite du Bus (cf ligne 151)
                         deplaceBus(bus1, getSensParcours(bus1), &incXDeplSpriteBus1, &incYDeplSpriteBus1);
-
                         const Uint8 *pKeyStates = SDL_GetKeyboardState(NULL);
                         // les touches sont lues en Qwerty
                         if (pKeyStates[SDL_SCANCODE_W])
@@ -185,7 +182,6 @@ int main(int argc, char *argv[])
                                 printf("\nTouche ECHAP");
                                 cont = 0; // sortie de la boucle
                         }
-
                         // affichage du jeu e chaque tour
 
                         // on efface toute la fenetre
@@ -205,6 +201,8 @@ int main(int argc, char *argv[])
 
                         SDL_Delay(1); // valeur du delai modifiable en fonction de votre CPU
                         ++frame;
+
+                        // Compteur de tours
                 }
                 // fin boucle du jeu
         }

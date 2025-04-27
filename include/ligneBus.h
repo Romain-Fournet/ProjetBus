@@ -35,5 +35,6 @@ void afficheCoordonneesBus( Tbus myBus );
 void ajouterStationsEtTroncons(TlisteStation *newLigne, TlisteStation ligne);
 TlisteStation jonctionLigneDeBus(TlisteStation ligne1, TlisteStation ligne2);
 void supprimerStation(TlisteStation *ligne, int idStation);
+void circulaire(TlisteStation *ligne);
 
 #endif // LIGNEBUS_H_INCLUDED

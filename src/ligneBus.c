@@ -407,7 +407,7 @@ void supprimerStation(TlisteStation *ligne, int idStation)
             if (current->prec == NULL && current->suiv != NULL)
             { // Au début de la liste
                 *ligne = current->suiv->suiv;
-                current->suiv->suiv->prec = NULL;
+                (*ligne)->prec = NULL;
             };
 
             if (current->prec != NULL && current->suiv != NULL)
@@ -421,10 +421,38 @@ void supprimerStation(TlisteStation *ligne, int idStation)
                 current->prec->prec->suiv = NULL;
             };
 
-            printf("Station ID %d supprimée de la ligne.\n", idStation);
+            printf("Station ID %d supprimee de la ligne.\n", idStation);
             return;
         }
         current = current->suiv;
     }
     printf("Station ID %d introuvable dans la ligne.\n", idStation);
+}
+
+void circulaire(TlisteStation *ligne) {
+    TlisteStation lastStation = getLastCell(*ligne);
+    TlisteStation nouv;
+    Tstation *troncon;
+    
+    int dist;
+
+
+    dist = getDistStations(*getPtrData(lastStation), *getPtrData(*ligne));
+    troncon = creeTroncon(
+        (-1),
+        getPtrData(lastStation),
+        getPtrData(*ligne),
+        dist,
+        dist
+    );
+
+    nouv = (T_liste)malloc(sizeof(struct T_cell));
+
+    nouv->pdata = troncon;
+
+    nouv->suiv = *ligne;
+    nouv->prec = lastStation;
+
+    lastStation->suiv = nouv;
+    (*ligne)->prec = nouv;
 }

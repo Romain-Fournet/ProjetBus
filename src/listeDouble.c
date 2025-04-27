@@ -107,7 +107,7 @@ T_liste getLastCell(T_liste l){
     }
 
     T_liste courant = l;
-    while (courant->suiv != NULL) {
+    while (courant->suiv != NULL && courant->suiv != l) {
         courant = courant->suiv;
     }
 
