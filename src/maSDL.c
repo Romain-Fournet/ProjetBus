@@ -6,26 +6,41 @@
 #include "ligneBus.h"       //getPosXStation
 
 
-void DessineUneLigneBus(TlisteStation l, LTexture mySpriteArretBus, SDL_Renderer* gRenderer){
-    TlisteStation maLigneBus = l, prochaineStation, prochainTroncon;
-    int idframe=0;
-    if (ligneBusVide(maLigneBus)){
-        SDL_Log("\n Erreur: ligne de bus sans station (maSDL.c)");
+void DessineUneLigneBus(TlisteStation l, LTexture mySpriteArretBus, SDL_Renderer* gRenderer) {
+    if (ligneBusVide(l)) {
+        SDL_Log("\nErreur : ligne de bus sans station (maSDL.c)");
+        return;
     }
-    else{
-        while (!ligneBusVide(maLigneBus)){
-                Affiche_Sprite(&mySpriteArretBus, gRenderer, getPosXStation(getPtrData(maLigneBus)), getPosYStation(getPtrData(maLigneBus)), idframe);
 
-                //A faire: tracer une ligne entre malignebus et la station suivante
-                prochaineStation = getNextStation( maLigneBus );
-                prochainTroncon = getNextTroncon( maLigneBus );
-                if (!ligneBusVide(prochaineStation)){
-                    TraceLigne(gRenderer,getPosXStation(getPtrData(maLigneBus)),getPosYStation(getPtrData(maLigneBus)),getPosXStation(getPtrData(prochaineStation)),getPosYStation(getPtrData(prochaineStation)),getIdLigneTroncon(getPtrData(prochainTroncon)));
-                }
+    TlisteStation maLigneBus = l;
+    TlisteStation prochaineStation, prochainTroncon;
+    int idframe = 0;
 
-                maLigneBus = prochaineStation;
+    do {
+        // Dessiner la station actuelle
+        Affiche_Sprite(&mySpriteArretBus, gRenderer, 
+                       getPosXStation(getPtrData(maLigneBus)), 
+                       getPosYStation(getPtrData(maLigneBus)), 
+                       idframe);
+
+        // Obtenir la station suivante et le tronçon suivant
+        prochaineStation = getNextStation(maLigneBus);
+        prochainTroncon = getNextTroncon(maLigneBus);
+
+        // Si la station suivante existe, tracer une ligne
+        if (!ligneBusVide(prochaineStation)) {
+            TraceLigne(gRenderer, 
+                       getPosXStation(getPtrData(maLigneBus)), 
+                       getPosYStation(getPtrData(maLigneBus)), 
+                       getPosXStation(getPtrData(prochaineStation)), 
+                       getPosYStation(getPtrData(prochaineStation)), 
+                       getIdLigneTroncon(getPtrData(prochainTroncon)));
         }
-    }
+
+        // Passer à la station suivante
+        maLigneBus = prochaineStation;
+
+    } while (maLigneBus != l && !ligneBusVide(maLigneBus)); // Arrêter si on revient au début ou si la liste est vide
 }
 
 void TraceLigne(SDL_Renderer* gRenderer, int xdep, int ydep, int xarr, int yarr, int idLigneBustoColor){
