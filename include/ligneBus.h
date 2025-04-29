@@ -36,6 +36,5 @@ void ajouterStationsEtTroncons(TlisteStation *newLigne, TlisteStation ligne);
 TlisteStation jonctionLigneDeBus(TlisteStation ligne1, TlisteStation ligne2);
 void supprimerStation(TlisteStation *ligne, int idStation);
 void circulaire(TlisteStation *ligne);
-void compteurTours(int *tourCount, Tbus bus);
 
 #endif // LIGNEBUS_H_INCLUDED
