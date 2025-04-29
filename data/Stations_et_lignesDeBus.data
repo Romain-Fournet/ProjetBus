@@ -1,30 +1,18 @@
 Ligne: 1
-1;Charle De Gaule;45;120
-2;Jules Ferry;180;210
-3;République;320;340
-4;Saint Michel;500;250
-5;Opéra;640;400
+1;Louvre;000;100
+2;Beaubourg;120;100
+3;Solférino;110;220
+4;Rambuteau;240;220
+5;Odéon;230;340
 Ligne: 2
-6;Montmartre;30;60
-7;Clemenceau;210;180
-8;Bastille;400;500
-9;Châtelet;520;320
-10;Trocadéro;680;600
+6;Cambronne;500;100
+7;Miromesnil;510;220
+8;Bréguet;380;220
+9;Volontaires;370;340
+10;Trudaine;460;340
 Ligne: 3
-11;Gare du Nord;100;80
-12;La Défense;300;150
-13;Invalides;450;400
-14;Nation;600;320
-15;Porte de Versailles;690;680
-Ligne: 4
-16;Pigalle;55;280
-17;Place d’Italie;290;420
-18;Belleville;460;520
-19;Pont Neuf;580;310
-20;Bercy;700;100
-Ligne: 5
-21;Denfert-Rochereau;75;620
-22;Gambetta;250;560
-23;Hôtel de Ville;410;200
-24;Ménilmontant;530;640
-25;Père Lachaise;710;350
+11;Vaneau;100;600
+12;Bonne Nouvelle;220;600
+13;Parmentier;210;480
+14;Courcelles;340;480
+15;Laumière;330;660
