@@ -202,7 +202,7 @@ int main(int argc, char *argv[])
                         SDL_Delay(1); // valeur du delai modifiable en fonction de votre CPU
                         ++frame;
 
-                        // Compteur de tours
+                        compteurTours(&tourCount, bus1);
                 }
                 // fin boucle du jeu
         }
