@@ -80,6 +80,7 @@ int main(int argc, char *argv[])
                 // JONCTION ENTRE DEUX LIGNES DE BUS POUR TEST (NE PAS EFFACER)
 
                 Tbus bus1 = creeBus(1, lignesBus[0]);
+                //Tbus bus2 = creeBus(2, lignesBus[2]);
 
                 // affiche sur la console les stations et troncons des lignes de bus
                 for (int i = 0; i < *nbLignes; i++)
@@ -92,7 +93,7 @@ int main(int argc, char *argv[])
                 // SUPRESSION D'UNE STATION DE BUS POUR TEST (NE PAS EFFACER)
 
                 // TEST DE LA FONCTION CIRCULAIRE (NE PAS EFFACER)
-                circulaire(&lignesBus[0]);
+                //circulaire(&lignesBus[0]);
                 // TEST DE LA FONCTION CIRCULAIRE (NE PAS EFFACER)
 
                 int tourCount = -1;
@@ -102,10 +103,12 @@ int main(int argc, char *argv[])
 
                 // affiche et initialise le sprite du bus au depart
                 Affiche_Sprite(&gSpriteBus, gRenderer, getPosXBus(bus1), getPosYBus(bus1), getIdFrame(frame));
+                //Affiche_Sprite(&gSpriteBus, gRenderer, getPosXBus(bus2), getPosYBus(bus2), getIdFrame(frame));
 
                 // boucle principale du jeu
                 int cont = 1;
                 int incXDeplSpriteBus1 = 0, incYDeplSpriteBus1 = 0; // deplacement du sprite du bus e chaque passage dans la boucle principale
+                int incXDeplSpriteBus2 = 0, incYDeplSpriteBus2 = 0;
                 while (cont != 0)
                 {
                         SDL_PumpEvents(); // do events
@@ -119,11 +122,11 @@ int main(int argc, char *argv[])
                         // deplaceBus gere le deplacement du bus sur sa ligne, selon son sens du parcours de la ligne;
                         // met e jour les variations en X et Y pour deplacer le sprite du Bus (cf ligne 151)
                         deplaceBus(bus1, getSensParcours(bus1), &incXDeplSpriteBus1, &incYDeplSpriteBus1);
+                        //deplaceBus(bus2, getSensParcours(bus2), &incXDeplSpriteBus2, &incYDeplSpriteBus2);
                         const Uint8 *pKeyStates = SDL_GetKeyboardState(NULL);
                         // les touches sont lues en Qwerty
                         if (pKeyStates[SDL_SCANCODE_W])
                         {
-
                                 /* Ajouter vos appels de fonctions ci-dessous qd le joueur appuye sur Z */
                                 printf("\nTouche Z, sens deplacement depart vers terminus\n");
                                 setSensParcours(bus1, depart_vers_arrivee);
