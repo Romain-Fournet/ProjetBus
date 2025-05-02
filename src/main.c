@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
                 // SUPRESSION D'UNE STATION DE BUS POUR TEST (NE PAS EFFACER)
 
                 // TEST DE LA FONCTION CIRCULAIRE (NE PAS EFFACER)
-                //circulaire(&lignesBus[0]);
+                circulaire(&lignesBus[0]);
                 // TEST DE LA FONCTION CIRCULAIRE (NE PAS EFFACER)
 
                 int tourCount = -1;
@@ -223,7 +223,6 @@ int main(int argc, char *argv[])
                         SDL_Delay(1); // valeur du delai modifiable en fonction de votre CPU
                         ++frame;
 
-                        // Compteur de tours
                 }
                 // fin boucle du jeu
         }
